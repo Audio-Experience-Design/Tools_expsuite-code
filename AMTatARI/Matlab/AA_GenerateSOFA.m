@@ -3,6 +3,10 @@ function AA_GenerateSOFA(sofaname,workdir,settingsfile,itemlistfile,referencefil
 % Process recorded sweeps into SOFA files.
 % This replaces all the VisualBasic code from the IRToolbox, and can be run
 % from Matlab directly
+% NOTE: this script will always remove redundant positions (edited by
+% Rapolas Daugintis, 2 May 2024). Also, the 1 ms padding that caused
+% negative delays changed to 0.75ms padding.
+removeRedundant = 1;
 
 r = 1.5; % TODO: verify this is the correct distance from speaker driver to arc center
 gain = 20; % in dB; TODO: input this as a parameter
@@ -298,7 +302,7 @@ pos(:,2) = el;
 
 if saveITD
 
-    pad = round(0.001*fs); % 1ms padding (empirically set)
+    pad = round(0.00075*fs); % 0.75ms padding (empirically set, changed from 1ms by Rapolas to fix negate delays)
 %     [~,onset_seconds] = itdestimator(permute(h,[2,3,1]),'MaxIACCe','fs',fs);
     [~,delay_seconds] = itdestimator(permute(h,[2,3,1]),'fs',fs,'threshlvl',-10);
 

@@ -108,6 +108,7 @@ Module Tracker
     Private calibrated As Boolean = False
     Private tsMinT, tsMaxT As TrackerSensor
     Private firstFrameReceived As Boolean = False
+    Private lostTrackingCount As Integer = 0
 
     Private mcurTic As Long
     Private mlSensor As Integer
@@ -535,19 +536,23 @@ Module Tracker
                             'mtsData(0).sngA = eul(0)
                             'mtsData(0).sngE = eul(1)
                             'mtsData(0).sngR = eul(2)
-
+                            lostTrackingCount = 0
                         Else
-                            ' Tracking lost. Assign wrong values to indicate so
-                            mtsData(0).sngX = 999
-                            mtsData(0).sngY = 999
-                            mtsData(0).sngZ = 999
-                            mtsData(0).sngA = 999
-                            mtsData(0).sngE = 999
-                            mtsData(0).sngR = 999
-                            mtsData(0).blnValid = True
-                            mtsData(0).visible = False
-                            mtsData(0).nCameras = CInt(varArgs(12))
+                            lostTrackingCount += 1
+                            If lostTrackingCount > 100 Then
+                                ' Tracking lost. Assign wrong values to indicate so
+                                mtsData(0).sngX = 999
+                                mtsData(0).sngY = 999
+                                mtsData(0).sngZ = 999
+                                mtsData(0).sngA = 999
+                                mtsData(0).sngE = 999
+                                mtsData(0).sngR = 999
+                                mtsData(0).blnValid = True
+                                mtsData(0).visible = False
+                                mtsData(0).nCameras = CInt(varArgs(12))
 
+                                lostTrackingCount = 0
+                            End If
                         End If
 
                         currentTrackerValue.blnValid = mtsData(0).blnValid

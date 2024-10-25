@@ -2,10 +2,10 @@
 clear
 
 % NOTE: ignore the warnings thrown by AA_GenerateSOFA
-
+amt_start
 % Generate reference
-dirnameL = 'C:\Users\Admin\Documents\AMTatARI files\Reference measurements\AMTatARI_20220208_174824_RefL';
-dirnameR = 'C:\Users\Admin\Documents\AMTatARI files\Reference measurements\AMTatARI_20220208_174548_RefR';
+dirnameL = 'Z:\Private\2022_SONICOM-HRTF-DATASET\Reference measurements\20240815_ReferenceMeasurementL';
+dirnameR = 'Z:\Private\2022_SONICOM-HRTF-DATASET\Reference measurements\20240815_ReferenceMeasurementR';
 sofaname = 'Reference';
 doplots = 1;
 targetFs = 96000;
@@ -21,8 +21,8 @@ if doplots
 end
 
 % Load data
-SOFApathL = sprintf('%s/%s_Windowed_%0.2dkHz.sofa',dirnameL,[sofaname,'_left'],round(targetFs/1000));
-SOFApathR = sprintf('%s/%s_Windowed_%0.2dkHz.sofa',dirnameR,[sofaname,'_right'],round(targetFs/1000));
+SOFApathL = sprintf('%s/HRTF/%0.2dkHz/%s_Windowed_%0.2dkHz.sofa',dirnameL,round(targetFs/1000),[sofaname,'_left'],round(targetFs/1000));
+SOFApathR = sprintf('%s/HRTF/%0.2dkHz/%s_Windowed_%0.2dkHz.sofa',dirnameR,round(targetFs/1000),[sofaname,'_right'],round(targetFs/1000));
 SOFAobjL = SOFAload(SOFApathL);
 SOFAobjR = SOFAload(SOFApathR);
 [hL,fs,az,el] = sofa2hrtf(SOFAobjL);
@@ -237,7 +237,7 @@ sgtitle('Equalised measurement, min phase, after windowing')
 %% Save
 elrad = el;
 el = elSp;
-save('reference_eq.mat','eq','eqmp','el','delay')
+save('Z:\Private\2022_SONICOM-HRTF-DATASET\Reference measurements\reference_eq.mat','eq','eqmp','el','delay')
 el = elrad;
 
 %% Aux functions
