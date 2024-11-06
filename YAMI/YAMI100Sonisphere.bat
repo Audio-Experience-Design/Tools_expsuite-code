@@ -11,16 +11,15 @@ rem %5 : MIDI in device index
 rem %6-%14: additional parameters
 
 rem --- which libraries to load?
-set pd_LIB=-lib %~dp0\lib\iemlib1 -lib %~dp0\lib\iemlib2 -lib %~dp0\lib\OSC -lib %~dp0\lib\comport -lib %~dp0\lib\vasp -lib %~dp0\lib\zexy -lib %~dp0\lib\dyn~
+set pd_LIB=-lib %~dp0\lib\iemlib1 -lib %~dp0\lib\iemlib2 -lib %~dp0\lib\OSC -lib %~dp0\lib\comport -lib %~dp0\lib\vasp -lib %~dp0\lib\zexy -lib %~dp0\lib\dyn~ -lib vbap -lib iemmatrix -lib partconv~ -lib define_loudspeakers
 
 rem --- pd directory
 set pd_PDDIR=%~dp0..
-
-rem --- any additional paths? (%~dp0 is the path of this file) 
-set pd_PATH=-path %~dp0abs
+rem --- any additional paths? (%~dp0 is the path of this file)
+set pd_PATH=-path %~dp0abs -path %~dp0..\extra\vbap -path %~dp0..\extra\iemlib -path %~dp0..\extra\iemmatrix -path %~dp0..\extra\bsaylor
 
 rem --- what patch open?
-set pd_OPEN=-open %~dp0\patches\YAMI2.pd
+set pd_OPEN=-open %~dp0\patches\YAMI100Sonisphere.pd
 
 rem --- Sampling rate? 
 set pd_SRATE=%1
@@ -49,8 +48,9 @@ SHIFT
 set pd_FLAGS=%1 %2 %3 %4 %5 %6 %7 %8 %9
 
 rem --- audio settings (adjust on every computer for sound interface)
-set pd_AUDIO=-blocksize 64 -audiobuf 70
+set pd_AUDIO=-blocksize 64 -audiobuf 42
 
 rem --- start Pd
+
 echo on
 %pd_PDDIR%\bin\pd -r %pd_SRATE% %pd_DEVICE% -channels %pd_CHANNELS% %pd_MIDIOUTDEV% %pd_MIDIINDEV% %pd_FLAGS% %pd_OPEN% %pd_AUDIO% %pd_LIB% %pd_PATH%
